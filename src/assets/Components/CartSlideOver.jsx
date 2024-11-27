@@ -40,7 +40,7 @@ export default function CartSlideOver({ isOpen, onClose, order, onCheckout, onVi
                 <div className="space-y-4">
                   {order.map((item) => (
                     <div
-                      key={item.id}
+                      key={item.id} // Unique key for each item
                       className="flex items-center justify-between p-4 bg-gray-50 rounded-xl"
                     >
                       <div className="flex items-center space-x-4">

@@ -1,75 +1,105 @@
 import React from "react";
-const RegistartionForm = () => {
+import { GoogleLogin } from "@react-oauth/google";
+import { useNavigate } from "react-router-dom";
+import { FaGoogle } from 'react-icons/fa';
+import { GiShoppingBag } from 'react-icons/gi';
+
+const Login = ({ setUser }) => {
+  const navigate = useNavigate();
+
+  const decodeJWT = (token) => {
+    const base64Payload = token.split(".")[1];
+    const decodedPayload = JSON.parse(atob(base64Payload));
+    return decodedPayload;
+  };
+
+  const handleLoginSuccess = (response) => {
+    console.log("Google Login Successful", response);
+    const decodedUser = decodeJWT(response.credential);
+    const user = {
+      name: decodedUser.name,
+      email: decodedUser.email,
+      picture: decodedUser.picture,
+    };
+    setUser(user);
+    navigate("/dashboard");
+  };
+
+  const handleLoginFailure = (error) => {
+    console.error("Login Failed", error);
+  };
+
   return (
-    <div className="h-[100vh] items-center flex justify-center px-5 lg:px-0">
-      <div className="max-w-screen-xl bg-white border shadow sm:rounded-lg flex justify-center flex-1">
-        <div className="flex-1 bg-blue-900 text-center hidden md:flex">
-          <div
-            className="m-12 xl:m-16 w-full bg-contain bg-center bg-no-repeat"
-            style={{
-              backgroundImage: `url(https://www.tailwindtap.com/assets/common/marketing.svg)`,
-            }}
-          ></div>
-        </div>
-        <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
-          <div className=" flex flex-col items-center">
-            <div className="text-center">
-              <h1 className="text-2xl xl:text-4xl font-extrabold text-blue-900">
-                Student Sign up
-              </h1>
-              <p className="text-[12px] text-gray-500">
-                Hey enter your details to create your account
-              </p>
-            </div>
-            <div className="w-full flex-1 mt-8">
-              <div className="mx-auto max-w-xs flex flex-col gap-4">
-                <input
-                  className="w-full px-5 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                  type="text"
-                  placeholder="Enter your name"
-                />
-                <input
-                  className="w-full px-5 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                  type="email"
-                  placeholder="Enter your email"
-                />
-                <input
-                  className="w-full px-5 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                  type="tel"
-                  placeholder="Enter your phone"
-                />
-                <input
-                  className="w-full px-5 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                  type="password"
-                  placeholder="Password"
-                />
-                <button className="mt-5 tracking-wide font-semibold bg-blue-900 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
-                  <svg
-                    className="w-6 h-6 -ml-2"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    strokeLinecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
-                    <circle cx="8.5" cy="7" r="4" />
-                    <path d="M20 8v6M23 11h-6" />
-                  </svg>
-                  <span className="ml-3">Sign Up</span>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8" style={{
+      backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+      backgroundRepeat: 'repeat',
+    }}>
+      <div className="max-w-md w-full space-y-8">
+        <div className="bg-white p-8 rounded-xl shadow-2xl transform transition-all hover:scale-105 duration-300">
+          <div className="text-center">
+            <GiShoppingBag className="mx-auto h-16 w-16 text-emerald-500" />
+            <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
+              Welcome to Fresh Picks
+            </h2>
+            <p className="mt-2 text-sm text-gray-600">
+              Sign in to start your fresh shopping experience
+            </p>
+          </div>
+          <div className="mt-8">
+            <GoogleLogin
+              onSuccess={handleLoginSuccess}
+              onError={handleLoginFailure}
+              useOneTap
+              render={({ onClick }) => (
+                <button
+                  onClick={onClick}
+                  className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors duration-300"
+                >
+                  <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                    <FaGoogle className="h-5 w-5 text-emerald-500 group-hover:text-emerald-400" />
+                  </span>
+                  Sign in with Google
                 </button>
-                <p className="mt-6 text-xs text-gray-600 text-center">
-                  Already have an account?{" "}
-                  <a href="">
-                    <span className="text-blue-900 font-semibold">Sign in</span>
-                  </a>
-                </p>
+              )}
+            />
+          </div>
+          <div className="mt-6">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white text-gray-500">
+                  Or continue with
+                </span>
               </div>
             </div>
+            <div className="mt-6 grid grid-cols-2 gap-3">
+              <button className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors duration-300">
+                Guest Login
+              </button>
+              <button className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors duration-300">
+                Learn More
+              </button>
+            </div>
           </div>
+        </div>
+        <div className="text-center mt-4">
+          <p className="text-xs text-gray-600">
+            By signing in, you agree to our{" "}
+            <a href="#" className="font-medium text-emerald-600 hover:text-emerald-500">
+              Terms of Service
+            </a>{" "}
+            and{" "}
+            <a href="#" className="font-medium text-emerald-600 hover:text-emerald-500">
+              Privacy Policy
+            </a>
+          </p>
         </div>
       </div>
     </div>
   );
 };
-export default RegistartionForm;
+
+export default Login;
+
