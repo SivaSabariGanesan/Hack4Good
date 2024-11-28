@@ -1,7 +1,8 @@
 import React from 'react';
 import { X, ShoppingBag, Package, Clock } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
-export default function CartSlideOver({ isOpen, onClose, order, onCheckout, onViewHistory }) {
+export default function CartSlideOver({ isOpen, onClose, order, onCheckout }) {
   const subtotal = order.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const shipping = 5.99;
   const tax = subtotal * 0.1;
@@ -39,10 +40,7 @@ export default function CartSlideOver({ isOpen, onClose, order, onCheckout, onVi
               ) : (
                 <div className="space-y-4">
                   {order.map((item) => (
-                    <div
-                      key={item.id} // Unique key for each item
-                      className="flex items-center justify-between p-4 bg-gray-50 rounded-xl"
-                    >
+                    <div key={item.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
                       <div className="flex items-center space-x-4">
                         <div className="w-16 h-16 rounded-lg overflow-hidden">
                           <img
@@ -93,20 +91,19 @@ export default function CartSlideOver({ isOpen, onClose, order, onCheckout, onVi
                 </div>
 
                 <div className="space-y-3">
-                  <button
-                    onClick={onCheckout}
-                    className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-4 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 flex items-center justify-center space-x-3 text-lg font-semibold"
-                  >
-                    <ShoppingBag className="w-6 h-6" />
-                    <span>Checkout</span>
-                  </button>
+                  <Link to="/checkout">
+                    <button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-4 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 flex items-center justify-center space-x-3 text-lg font-semibold">
+                      <ShoppingBag className="w-6 h-6" />
+                      <span>Proceed to Checkout</span>
+                    </button>
+                  </Link>
 
                   <button
-                    onClick={onViewHistory}
+                    onClick={onClose}
                     className="w-full bg-gray-100 text-gray-700 px-6 py-4 rounded-xl hover:bg-gray-200 transition-all duration-200 flex items-center justify-center space-x-3"
                   >
                     <Clock className="w-6 h-6" />
-                    <span>Order History</span>
+                    <span>Close</span>
                   </button>
                 </div>
               </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShoppingCart, History } from 'lucide-react'; // Add History icon
+import { ShoppingCart, History } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import CartSlideOver from '../Components/CartSlideOver';
 
@@ -10,7 +10,7 @@ const Header = ({ order, onViewHistory, user, setUser }) => {
 
   // Navigate to checkout page
   const handleCheckout = () => {
-    navigate('/checkout'); // Redirect to the Checkout page
+    navigate('/checkout');
   };
 
   // Logout user
@@ -35,7 +35,7 @@ const Header = ({ order, onViewHistory, user, setUser }) => {
 
   // View order history
   const handleOrderHistory = () => {
-    onViewHistory(); // Trigger the order history action
+    onViewHistory();
   };
 
   return (
@@ -109,7 +109,7 @@ const Header = ({ order, onViewHistory, user, setUser }) => {
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
         order={order}
-        onCheckout={handleCheckout} // Pass handleCheckout here
+        onCheckout={handleCheckout}
         onViewHistory={onViewHistory}
       />
     </div>
