@@ -26,7 +26,7 @@ export default function App() {
   };
 
   return (
-    <GoogleOAuthProvider clientId="179047694565-gjv2b779lt37ofj82ntni43dco5ppgb8.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId="#####">
       <Router>
         <div className="min-h-screen bg-gray-100">
           <Header
